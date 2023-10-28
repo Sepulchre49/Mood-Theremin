@@ -1,0 +1,40 @@
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+base_frequencies = {
+    "happy": 500,
+    "sad": 200,
+    "angry": 600,
+    "scared": 400
+}
+
+def emotion_to_frequency(emotion, weight):
+    base_frequency = base_frequencies.get(emotion, 0)
+    return base_frequency * (1 + weight)
+
+def emotion_to_amplitude(weight):
+    return weight * 10
+
+X = np.array([
+    [0.2],  # emotion for sample 1
+    [0.5],  # emotion for sample 2
+    # ... add more samples as needed
+])
+
+y_freq = [emotion_to_frequency("happy", weight[0]) for weight in X]
+y_amp = [emotion_to_amplitude(weight[0]) for weight in X]
+y = np.array([[freq, amp] for freq, amp in zip(y_freq, y_amp)])
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("Predictions:", y_pred)
