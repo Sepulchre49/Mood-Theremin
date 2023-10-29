@@ -1,91 +1,100 @@
-<script type="text/javascript" src="/static/blobUtils.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mood Theramin</title>
+    <script type="text/javascript" src="/static/blobUtils.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Your Header Content Here</h1>
+    </header>
 
-<video id="myVidPlayer" muted autoplay></video>
+    <video id="myVidPlayer" muted autoplay></video>
 
-<div class="mycanvas">
-    <h6>Captured snapshot</h6>
-    <canvas></canvas>
-</div>
+    <div class="mycanvas">
+      <h6>Captured snapshot</h6>
+      <canvas></canvas>
+    </div>
 
-<script type="text/javascript">
-    const canvas = document.querySelector("canvas");
-    const context = canvas.getContext("2d");
-    const video = document.querySelector('#myVidPlayer');
-    const socket = new WebSocket("wss://api.hume.ai/v0/stream/models?apiKey=IgSfnRwS4whHOTGMhxwxh5m6CGoKMj8zu1RrzwwoaErcjZkY")
-    const actx = new AudioContext();
-    const gain = new GainNode(actx);
-    const oscs = [new OscillatorNode(actx, {type:"sine", frequency:440})];
-    gain.connect(actx.destination);
+    <script type="text/javascript">
+      const canvas = document.querySelector("canvas");
+      const context = canvas.getContext("2d");
+      const video = document.querySelector("#myVidPlayer");
+      const socket = new WebSocket(
+        "wss://api.hume.ai/v0/stream/models?apiKey=IgSfnRwS4whHOTGMhxwxh5m6CGoKMj8zu1RrzwwoaErcjZkY"
+      );
+      const actx = new AudioContext();
+      const gain = new GainNode(actx);
+      const oscs = [new OscillatorNode(actx, { type: "sine", frequency: 440 })];
+      gain.connect(actx.destination);
 
-    oscs[0].connect(gain);
-    oscs[0].start();
+      oscs[0].connect(gain);
+      oscs[0].start();
 
-    socket.onopen = e => console.log("Successfully connected to HUME");
-    socket.onerror = e => console.error(`Error connecting to HUME api: ${e}`);
-    socket.onmessage = async e => {
+      socket.onopen = (e) => console.log("Successfully connected to HUME");
+      socket.onerror = (e) =>
+        console.error(`Error connecting to HUME api: ${e}`);
+      socket.onmessage = async (e) => {
         actx.resume();
         const data = JSON.parse(e.data);
-        //console.log(JSON.stringify(data));
-        //const emotions = data["face"]["predictions"][0]["emotions"].sort((a,b) => b.score - a.score);
         const faces = data["face"];
         if (faces["code"] == "W0103") {
-            console.log("No faces detected");
+          console.log("No faces detected");
         } else {
-            const emotions = faces["predictions"][0]["emotions"];
-            const result = await fetch("/freq", {
-                "method": "POST",
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "body": JSON.stringify(emotions)
-            });
-            console.log(result.json());
-            //console.log(topScore);
-            //gain.gain.value = topScore;
-            //console.log(gain.gain.value);
+          const emotions = faces["predictions"][0]["emotions"];
+          const result = await fetch("/freq", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(emotions),
+          });
+          console.log(result.json());
         }
-    }
+      };
 
-    //w-width,h-height
-    var w, h;
-    canvas.style.display = "none";
+      var w, h;
+      canvas.style.display = "none";
 
-    //new
-    async function snapshot() {
-        //console.log("Sending a new request");
+      async function snapshot() {
         context.fillRect(0, 0, w, h);
         context.drawImage(video, 0, 0, w, h);
         const snapBlob = await canvasToImageBlob(canvas);
         const blob64 = await blobToBase64(snapBlob);
         const requestData = JSON.stringify({
-            data: blob64,
-            models: {
-                face: {},
-            }
+          data: blob64,
+          models: {
+            face: {},
+          },
         });
 
         if (socket.readyState === WebSocket.OPEN) {
-            socket.send(requestData);
+          socket.send(requestData);
         }
-    }
+      }
 
-    window.navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then(stream => {
-            video.srcObject = stream;
-            video.onloadedmetadata = (e) => {
-                video.play();
+      window.navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          video.srcObject = stream;
+          video.onloadedmetadata = (e) => {
+            video.play();
 
-                //new
-                w = video.videoWidth;
-                h = video.videoHeight
+            w = video.videoWidth;
+            h = video.videoHeight;
 
-                canvas.width = w;
-                canvas.height = h;
-                snapshot();
-            };
+            canvas.width = w;
+            canvas.height = h;
+            snapshot();
+          };
         })
-        .catch(error => {
-            alert('You have to enable the mike and the camera');
+        .catch((error) => {
+          alert("You have to enable the mike and the camera");
         });
-    setInterval(() => snapshot(), 1000);
-</script>
+      setInterval(() => snapshot(), 1000);
+    </script>
+  </body>
+</html>
