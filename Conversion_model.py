@@ -68,16 +68,7 @@ def calculate_frequencies(X_final):
         'Triumph': [61, 64, 67, 71]  # C#min7 (C# minor 7th chord)
     }
 
-    # sample = [{"name":"Admiration","score":0.07415325939655304},{"name":"Adoration","score":0.04839807376265526},{"name":"Aesthetic Appreciation","score":0.05676857754588127},{"name":"Amusement","score":0.07592721283435822},{"name":"Anger","score":0.13852645456790924},{"name":"Anxiety","score":0.20224520564079285},{"name":"Awe","score":0.08006451278924942},{"name":"Awkwardness","score":0.1989041417837143},{"name":"Boredom","score":0.4849560856819153},{"name":"Calmness","score":0.4224143922328949},{"name":"Concentration","score":0.5376547574996948},{"name":"Contemplation","score":0.26034364104270935},{"name":"Confusion","score":0.4452255666255951},{"name":"Contempt","score":0.2082958072423935},{"name":"Contentment","score":0.09196557849645615},{"name":"Craving","score":0.04815756902098656},{"name":"Determination","score":0.16650956869125366},{"name":"Disappointment","score":0.3919934034347534},{"name":"Disgust","score":0.10294600576162338},{"name":"Distress","score":0.23077549040317535},{"name":"Doubt","score":0.39601221680641174},{"name":"Ecstasy","score":0.019921358674764633},{"name":"Embarrassment","score":0.10861977189779282},{"name":"Empathic Pain","score":0.09282194077968597},{"name":"Entrancement","score":0.12318386137485504},{"name":"Envy","score":0.05639307573437691},{"name":"Excitement","score":0.03756822645664215},{"name":"Fear","score":0.10646592825651169},{"name":"Guilt","score":0.10741506516933441},{"name":"Horror","score":0.04396319016814232},{"name":"Interest","score":0.2619619369506836},{"name":"Joy","score":0.044376347213983536},{"name":"Love","score":0.05405403673648834},{"name":"Nostalgia","score":0.06184641644358635},{"name":"Pain","score":0.1139938086271286},{"name":"Pride","score":0.05775243416428566},{"name":"Realization","score":0.16125433146953583},{"name":"Relief","score":0.05220986157655716},{"name":"Romance","score":0.031416311860084534},{"name":"Sadness","score":0.2636529505252838},{"name":"Satisfaction","score":0.06935200095176697},{"name":"Desire","score":0.03945295140147209},{"name":"Shame","score":0.09069083631038666},{"name":"Surprise (negative)","score":0.06128573790192604},{"name":"Surprise (positive)","score":0.0410880371928215},{"name":"Sympathy","score":0.06239188462495804},{"name":"Tiredness","score":0.27945026755332947},{"name":"Triumph","score":0.022807205095887184}]
-    # emo48 = []
-    # for ld in sample:
-    #     emo48.append(ld["name"])
     emotions = list(emotion_chord_mapping.keys())
-    # count = 0
-    # for emo in emo48:
-    #     if emo not in emotions:
-    #         print("uoh")
-
 
     # convertion from note (MIDI) to frequency
     def note_to_frequency(note_number):
@@ -86,7 +77,6 @@ def calculate_frequencies(X_final):
 
     # Normalize a sample (x0 -> (X_i, y_i))
     def normalize(x0):
-        #print(x0)
         # take a high dimensional vector and normalize the highest score to be the absolute volume
         maxscore = max(x0, key=lambda x: x['score'])
         s = 0
@@ -157,7 +147,6 @@ def calculate_frequencies(X_final):
     X_train = X_scores
     y_train = Y
     X_test = np.array(X_final_scores).reshape(1,-1)
-    #print(X_final_scores)
 
     # PCA
     pca = PCA(n_components=10)  
@@ -177,32 +166,11 @@ def calculate_frequencies(X_final):
 
     # Round the first 4 dimensions of the predictions
     predictions[:, :4] = np.round(predictions[:, :4]).astype(int)
-    # print("Mean Squared Error:", mse)
 
     # Convert MIDI notes to frequencies
     for i in range(4):
         predictions[:, i] = note_to_frequency(predictions[:, i])
 
-    # Accuracy visualization
-    # for i in range(5):
-    #     plt.figure(figsize=(8, 6))
-    #     y_test_i = [y_test[_][i] for _ in range(len(y_test))]
-    #     predictions_i = [predictions[_][i] for _ in range(len(y_test))]
-        
-    #     # Add small random noise to the points for better visibility
-    #     noise = np.random.normal(0, 0.01, len(y_test_i))
-    #     y_test_i += noise
-    #     predictions_i += noise
-        
-    #     plt.scatter(y_test_i, predictions_i, color='black', label='Actual vs. Predicted', s = 5)
-    #     plt.plot(y_test_i, y_test_i, color='red', linewidth=0.5, label='Perfect Prediction (y=x)')
-        
-    #     plt.xlabel('Actual Values')
-    #     plt.ylabel('Predicted Values')
-    #     plt.title(f'Actual vs. Predicted Values for Dimension {i+1}')
-    #     plt.legend()
-    #     plt.grid(True)
-    #     plt.show()
     return predictions
 
 if __name__ == "__main__":
