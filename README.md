@@ -32,6 +32,7 @@ Inspired by the theremin, we created Mood Theremin in [Cal Hack 10.0](https://ww
 **Contribution:**
 
 - Shujing Hu: Developed the machine learning model and fine-tuned the mapping algorithm.
+- Tri Pham: Designed the front-end interactive 3-D experience using Three.js
 
 
 
