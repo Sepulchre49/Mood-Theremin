@@ -6,32 +6,43 @@ const socket = new WebSocket(
 );
 const actx = new AudioContext();
 const gain = new GainNode(actx);
-const oscs = [new OscillatorNode(actx, { type: "sine", frequency: 440 })];
+const oscs = [new OscillatorNode(actx), new OscillatorNode(actx), new OscillatorNode(actx), new OscillatorNode(actx)];
+oscs.forEach(osc => {
+    osc.start();
+    osc.connect(gain);
+});
 gain.connect(actx.destination);
 
-oscs[0].connect(gain);
-oscs[0].start();
-
-socket.onopen = (e) => console.log("Successfully connected to HUME");
-socket.onerror = (e) => console.error(`Error connecting to HUME api: ${e}`);
-socket.onmessage = async (e) => {
-  actx.resume();
-  const data = JSON.parse(e.data);
-  const faces = data["face"];
-  if (faces["code"] == "W0103") {
-    console.log("No faces detected");
-  } else {
-    const emotions = faces["predictions"][0]["emotions"];
-    const result = await fetch("/freq", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(emotions),
-    });
-    console.log(result.json());
-  }
-};
+socket.onopen = e => console.log("Successfully connected to HUME");
+socket.onerror = e => console.error(`Error connecting to HUME api: ${e}`);
+socket.onmessage = async e => {
+    actx.resume();
+    const data = JSON.parse(e.data);
+    //console.log(JSON.stringify(data));
+    //const emotions = data["face"]["predictions"][0]["emotions"].sort((a,b) => b.score - a.score);
+    const faces = data["face"];
+    if (faces["code"] == "W0103") {
+        console.log("No faces detected");
+    } else {
+        const emotions = faces["predictions"][0]["emotions"];
+        const result = await fetch("/freq", {
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": JSON.stringify(emotions)
+        });
+        results = await result.json();
+        results = results[0]
+        //console.log(results);
+        gain.gain.exponentialRampToValueAtTime(results[4], 0.3);
+        console.log(gain.gain.value)
+        for (let i =0; i<4; i++) {
+            oscs[i].frequency.exponentialRampToValueAtTime(results[i],0.3);
+        }
+        console.log(oscs);
+    }
+}
 
 var w, h;
 canvas.style.display = "none";
