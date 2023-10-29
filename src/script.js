@@ -183,7 +183,7 @@ const tick = () => {
 /**
  * Initialize
  */
-async function init() {
+export default async function init() {
   // Set up the webcam
   const video = await setupWebcam();
 
@@ -205,6 +205,5 @@ async function init() {
 
   // Start the animation loop
   tick();
+  return video;
 }
-
-init();

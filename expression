@@ -1,40 +1,95 @@
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
+import pygame
 
-import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-
-base_frequencies = {
-    "happy": 500,
-    "sad": 200,
-    "angry": 600,
-    "scared": 400
+# 1. Emotion Coordinates
+EMOTION_GROUPS = {
+    'group1': ['spiritual', 'solemn', 'serious'],
+    'group2': ['sad', 'dark', 'frustrated'],
+    'group3': ['sentimental', 'tender', 'dreamy'],
+    'group4': ['quiet', 'satisfying', 'soothing'],
+    'group5': ['humorous', 'fanciful', 'graceful'],
+    'group6': ['happy', 'bright', 'cheerful'],
+    'group7': ['exciting', 'dramatic', 'passionate'],
+    'group8': ['vigorous', 'robust', 'majestic']
 }
 
-def emotion_to_frequency(emotion, weight):
-    base_frequency = base_frequencies.get(emotion, 0)
-    return base_frequency * (1 + weight)
+# 2. Detailed Frequencies and Amplitudes for each emotion
+FREQUENCIES = {
+    'spiritual': 260.00,
+    'solemn': 262.00,
+    'serious': 264.00,
+    'sad': 291.00,
+    'dark': 293.50,
+    'frustrated': 296.00,
+    'sentimental': 328.00,
+    'tender': 330.50,
+    'dreamy': 333.00,
+    'quiet': 348.00,
+    'satisfying': 350.50,
+    'soothing': 353.00,
+    'humorous': 390.00,
+    'fanciful': 392.50,
+    'graceful': 395.00,
+    'happy': 438.00,
+    'bright': 441.50,
+    'cheerful': 444.00,
+    'exciting': 492.00,
+    'dramatic': 495.50,
+    'passionate': 498.00,
+    'vigorous': 522.00,
+    'robust': 524.50,
+    'majestic': 527.00
+}
 
-def emotion_to_amplitude(weight):
-    return weight * 10
+AMPLITUDES = {
+    'spiritual': 0.19,
+    'solemn': 0.20,
+    'serious': 0.21,
+    'sad': 0.29,
+    'dark': 0.30,
+    'frustrated': 0.31,
+    'sentimental': 0.39,
+    'tender': 0.40,
+    'dreamy': 0.41,
+    'quiet': 0.49,
+    'satisfying': 0.50,
+    'soothing': 0.51,
+    'humorous': 0.59,
+    'fanciful': 0.60,
+    'graceful': 0.61,
+    'happy': 0.69,
+    'bright': 0.70,
+    'cheerful': 0.71,
+    'exciting': 0.79,
+    'dramatic': 0.80,
+    'passionate': 0.81,
+    'vigorous': 0.99,
+    'robust': 1.00,
+    'majestic': 1.01
+}
 
-X = np.array([
-    [0.2],  # emotion for sample 1
-    [0.5],  # emotion for sample 2
-    # ... add more samples as needed
-])
+def get_emotion_group(emotion):
+    for group, emotions in EMOTION_GROUPS.items():
+        if emotion in emotions:
+            return group
+    return None
 
-y_freq = [emotion_to_frequency("happy", weight[0]) for weight in X]
-y_amp = [emotion_to_amplitude(weight[0]) for weight in X]
-y = np.array([[freq, amp] for freq, amp in zip(y_freq, y_amp)])
+def play_piano_for_emotion(emotion):
+    frequency = FREQUENCIES[emotion]
+    amplitude = AMPLITUDES[emotion]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    pygame.mixer.init(frequency=frequency)
+    pygame.mixer.music.set_volume(amplitude)
+    pygame.mixer.music.load('path_to_piano_note.wav')
+    pygame.mixer.music.play()
 
-model = LinearRegression()
-model.fit(X_train, y_train)
+    pygame.time.wait(1000)
 
-y_pred = model.predict(X_test)
+emotion_input = input("Enter an emotion: ").strip().lower()
+group = get_emotion_group(emotion_input)
 
-print("Predictions:", y_pred)
+if group:
+    print(f"Detected Group: {group}")
+    play_piano_for_emotion(emotion_input)
+else:
+    print("Unknown emotion.")
