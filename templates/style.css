@@ -1,0 +1,52 @@
+/* Resetting some default styles for simplicity */
+body, html, h1, h6 {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    /* Applying the linear gradient to the body */
+    background: linear-gradient(to top, #000000, #ff00ff);
+    /* Setting the body height to 100vh to ensure it fills the whole viewport */
+    height: 100vh;
+    /* Setting a flex display to center contents */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  header h1 {
+    color: #ffffff; /* Making the header content white for visibility against the gradient */
+    margin-bottom: 2rem; /* Spacing below the header */
+  }
+  
+  .mycanvas {
+    /* Centering content within the .mycanvas div */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  canvas {
+    /* Styling the canvas as per your provided image */
+    width: calc(100vh * 0.75); /* Assuming the width based on a 4:3 aspect ratio */
+    height: 75vh; /* Making it occupy most of the viewport */
+    background-color: black; /* Black background color */
+    border: 5px solid white; /* White border around it */
+  }
+  
+  h6 {
+    color: #ffffff; /* Making the h6 content white for visibility against the gradient */
+    margin-bottom: 1rem; /* Spacing below the h6 tag */
+  }
+  
+  video#myVidPlayer {
+    /* You can customize this as needed */
+    width: 100%;
+    max-width: 800px; /* Assuming a max width, adjust as needed */
+    margin: 2rem 0; /* Spacing above and below the video */
+  }
+  
+  
