@@ -9,8 +9,8 @@ body {
   background: linear-gradient(
     to bottom,
     #000000 0%,
-    #370e29 40%,
-    #c72bc7 60%,
+    #370e29 45%,
+    #c72bc7 65%,
     #130113 100%
   );
 
@@ -31,6 +31,8 @@ h1 {
   letter-spacing: 1.5px;
   text-align: center;
   padding: 20px 0;
+  /* border-radius: 8px; */
+  /* box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2); */
 }
 
 h6 {
