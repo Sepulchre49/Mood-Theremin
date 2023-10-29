@@ -72,3 +72,24 @@ window.navigator.mediaDevices
     alert("You have to enable the microphone and the camera");
   });
 setInterval(() => snapshot(), 1000);
+
+
+/**
+ * Mute Button
+ */
+const muteButton = document.querySelector("#muteButton");
+
+// Initially set to muted
+let isMuted = true;
+
+muteButton.addEventListener("click", function() {
+  if (isMuted) {
+    video.muted = false;
+    muteButton.innerText = "Unmute";
+    isMuted = false;
+  } else {
+    video.muted = true;
+    muteButton.innerText = "Mute";
+    isMuted = true;
+  }
+});
