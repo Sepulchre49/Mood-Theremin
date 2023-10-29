@@ -1,3 +1,6 @@
+'''
+The final KNN regressor working model to predict frequencies and volumes based on the emotion vectors.
+'''
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.decomposition import PCA
 import numpy as np
