@@ -104,5 +104,3 @@ muteButton.addEventListener("click", function() {
     isMuted = true;
   }
 });
-
-// TODO Have mute button save prev amplitude value
