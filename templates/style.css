@@ -1,44 +1,43 @@
 /* Resetting some default styles for simplicity */
-body,
-html,
-h1 {
-  font-family: "Roboto", sans-serif; /* Modern font choice */
-  color: #ffffff; /* Light text on dark background */
-  text-transform: uppercase;
-  font-size: 1.5em;
-  font-weight: 700; /* Bold typography */
-  letter-spacing: 1.5px; /* Slight letter spacing */
-  text-align: center;
-  background-color: #181818; /* Dark background */
-  padding: 20px 0;
-  border-radius: 8px;
-  margin: 20px 0;
-  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-}
-h6 {
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  /* Applying the linear gradient to the body */
+  overflow: hidden; /* This will remove the scrollbar */
   background: linear-gradient(to top, #000000, #ff00ff);
-  /* Setting the body height to 100vh to ensure it fills the whole viewport */
   height: 100vh;
-  /* Setting a flex display to center contents */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+html,
+h1 {
+  font-family: "Roboto", sans-serif;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-align: center;
+  background-color: #181818;
+  padding: 20px 0;
+  border-radius: 8px;
+  margin: 20px 0;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+h6 {
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
 header h1 {
-  color: #ffffff; /* Making the header content white for visibility against the gradient */
-  margin-bottom: 2rem; /* Spacing below the header */
+  color: #ffffff;
+  margin-bottom: 2rem;
 }
 
 .mycanvas {
-  /* Centering content within the .mycanvas div */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,25 +45,16 @@ header h1 {
 }
 
 canvas {
-  /* Styling the canvas as per your provided image */
-  width: calc(
-    100vh * 0.75
-  ); /* Assuming the width based on a 4:3 aspect ratio */
-  height: 75vh; /* Making it occupy most of the viewport */
-  background-color: black; /* Black background color */
-  border: 5px solid white; /* White border around it */
-}
-
-h6 {
-  color: #ffffff; /* Making the h6 content white for visibility against the gradient */
-  margin-bottom: 1rem; /* Spacing below the h6 tag */
+  width: calc(100vh * 0.75);
+  height: 75vh;
+  background-color: black;
+  border: 5px solid white;
 }
 
 video#myVidPlayer {
-  /* You can customize this as needed */
   width: 100%;
-  max-width: 800px; /* Assuming a max width, adjust as needed */
-  margin: 2rem 0; /* Spacing above and below the video */
+  max-width: 800px;
+  margin: 2rem 0;
 }
 
 #muteButton {
@@ -75,6 +65,10 @@ video#myVidPlayer {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  position: absolute; /* Add this */
+  bottom: 10px; /* Add this: Adjust as necessary */
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 #muteButton:hover {
