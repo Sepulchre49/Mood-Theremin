@@ -1,7 +1,19 @@
-/* Resetting some default styles for simplicity */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   overflow: hidden; /* This will remove the scrollbar */
-  background: linear-gradient(to top, #000000, #ff00ff);
+  background: linear-gradient(
+    to bottom,
+    #000000 0%,
+    #000000 40%,
+    #ff00ff 60%,
+    #ff00ff 100%
+  );
+
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,7 +30,7 @@ h1 {
   font-weight: 700;
   letter-spacing: 1.5px;
   text-align: center;
-  background-color: #181818;
+  /* background-color: #181818; */
   padding: 20px 0;
   border-radius: 8px;
   margin: 20px 0;
