@@ -95,11 +95,9 @@ let isMuted = true;
 
 muteButton.addEventListener("click", function() {
   if (isMuted) {
-    video.muted = false;
     muteButton.innerText = "Unmute";
     isMuted = false;
   } else {
-    video.muted = true;
     muteButton.innerText = "Mute";
     isMuted = true;
   }
